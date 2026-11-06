@@ -722,6 +722,13 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
 .ex-pic svg { display: block; width: 100%; height: auto; }
 .ex-text { font-size: 1.08rem; line-height: 1.45; text-wrap: balance; }
 .ex-text .nb { white-space: nowrap; }
+/* Startbildschirm (US 1.18): sagt beim ersten Start Hallo und erklärt das Spiel in fünf kurzen Schritten */
+#hello { z-index: 14; }   /* über der Erklär-Karte (13): erst Hallo, danach die Karte der ersten Aufgabe */
+.hello-sheet h2 { font-size: 1.7rem; margin: 2px 0 4px; }
+.hello-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; text-align: left; }
+.hello-steps li { display: grid; grid-template-columns: 2.1rem 1fr; align-items: center; gap: 10px; font-size: 1.05rem; line-height: 1.35;
+  background: #fffaf0; border-radius: 10px; box-shadow: inset 0 0 0 1px #e6d3a8; padding: 8px 10px; }
+.hello-steps .he { font-size: 1.6rem; text-align: center; }
 /* ab 1.16: Sammlung auf Pergament, Reiter wie Lederlaschen */
 .sheet.parch { background: #f7ecd2 radial-gradient(circle at 50% 0, rgba(255, 255, 255, .55), rgba(255, 255, 255, 0) 60%); border: 3px double #9a7438; box-shadow: 5px 5px 0 rgba(20, 14, 26, .25), inset 0 0 40px rgba(150, 105, 40, .14); }
 .sheet.parch h2 { color: #5a3410; }
@@ -916,6 +923,16 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
     <p class="ex-text" id="exText"></p>
     <button class="small-btn" id="exAgain" type="button">🔊 Hear it again</button>
     <button class="big-btn" id="exClose" type="button">Got it!</button>
+  </div>
+</div>
+
+<div class="overlay" id="hello" hidden role="dialog" aria-modal="true" aria-labelledby="helloTitle">
+  <div class="sheet ex-sheet hello-sheet">
+    <p class="ex-kicker">Welcome to Math Journey</p>
+    <h2 id="helloTitle">Hi there! 👋</h2>
+    <ul class="hello-steps" id="helloSteps"></ul>
+    <button class="small-btn" id="helloRead" type="button">🔊 Read it to me</button>
+    <button class="big-btn" id="helloGo" type="button">Let's go! 🚀</button>
   </div>
 </div>
 
@@ -2959,7 +2976,7 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
     out.stats = cleanStats(raw.stats); out.days = cleanDays(raw.days); out.err = cleanErr(raw.err);
     out.hof = cleanHof(raw.hof);
     out.seq = int(raw.seq, 0, 1e9) ?? 0;
-    if (Array.isArray(raw.seen)) out.seen = [...new Set(raw.seen.filter((k) => typeof k === "string" && has(KARTEN, k)))];
+    if (Array.isArray(raw.seen)) out.seen = [...new Set(raw.seen.filter((k) => typeof k === "string" && (has(KARTEN, k) || k === "hallo")))];   // „hallo“: Startbildschirm (US)
     out.savedAt = typeof raw.savedAt === "number" && raw.savedAt > 0 ? raw.savedAt : 0;
     return out;
   }
@@ -5754,7 +5771,7 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
   // ---------- Eingabe ----------
   const coarse = !!(window.matchMedia && matchMedia("(pointer: coarse)").matches);
   const padVisible = () => state.pad === "show" || (state.pad === "auto" && coarse);
-  const overlayOpen = () => ["reward", "album", "viewer", "parents", "cert", "markView", "hof", "henView", "explain"].some((id) => !$(id).hidden);
+  const overlayOpen = () => ["reward", "album", "viewer", "parents", "cert", "markView", "hof", "henView", "explain", "hello"].some((id) => !$(id).hidden);
 
   function applyPad() {
     const show = padVisible(), choose = choiceTask(task);
@@ -6107,6 +6124,7 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
   $("viewer").addEventListener("click", (e) => { if (e.target.id === "viewer") closeViewer(); });
 
   function closeOverlays() {
+    if (!$("hello").hidden) { closeHello(); return; }
     if (!$("henView").hidden) { $("henView").hidden = true; return; }
     if (!$("hof").hidden) { if (!$("hofClose").hidden) closeHof(); return; }   // beim Schlüpfen erst einen Namen wählen
     if (!$("explain").hidden) { closeCard(); return; }
@@ -6275,6 +6293,8 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
       <details class="pg"><summary>Controls</summary>
         ${seg("pad", "On-screen keys", [["auto", "automatic"], ["show", "always show"], ["hide", "keyboard only"]],
           "“Automatic” shows the big number keys on tablets and phones. On a computer, you type into the answer box. The keyboard always works.", { auto: "padAuto", show: "padShow", hide: "padHide" })}
+        <div class="p-field"><button type="button" class="small-btn" id="helloShow">Show the welcome screen</button>
+          <span class="note">The short “Hi!” screen that explains the game. It appears by itself only on the very first start.</span></div>
       </details>
 
 
@@ -6425,6 +6445,8 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
         const id = b.dataset.chip, lv = skLevel(id);
         setSk(id, lv === 1 ? 2 : lv === 2 ? 0 : 1);
         afterChange("cfg.sk");
+      } else if (b.id === "helloShow") {
+        closeParents(); showHello();
       } else if (b.id === "voiceTest") {
         if (useClips()) $("voiceMsg").textContent = " Warm voice (recorded)";
         else if (!hasSpeech) { $("voiceMsg").textContent = " This device has no speech output."; return; }
@@ -6625,6 +6647,45 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
     });
   }
 
+  // ---------- Startbildschirm (US 1.18) ----------
+  // Beim ersten Start sagt die App Hallo und erklärt in fünf kurzen Schritten, wie es geht (nur fürs Kind, wenig Text).
+  // „Gesehen“ steht wie bei den Erklär-Karten in state.seen („hallo“). Im Eltern-Menü lässt er sich wieder zeigen.
+  function helloSteps() {
+    const hof = hofOn();
+    return [
+      ["🔢", "Solve the math problem. Type your answer, then tap <b>Check</b>."],
+      ["⭐", "Every right answer fills a star."],
+      hof ? ["🥚", "Fill all the stars and you get an egg. Keep going, and a chick hatches. You get to pick its name!"]
+          : ["🖼️", "Fill all the stars and you get a new picture for your album."],
+      ["💡", "Stuck? Tap <b>Hint</b>. Mistakes are okay. They help your brain grow!"],
+      ["📖", hof ? "Tap <b>Album</b> to visit your chickens and your workshops." : "Tap <b>Album</b> to see your pictures and your workshops."],
+    ];
+  }
+  const helloName = () => (state.cfg.name ? `Hi, ${state.cfg.name}! 👋` : "Hi there! 👋");
+  // gesprochen: ohne Bildzeichen und ohne <b>
+  const helloSay = () => `${helloName().replace(" 👋", "")} Welcome to Math Journey! ` + helloSteps().map(([, t]) => t.replace(/<\/?b>/g, "")).join(" ") + " Let's go!";
+  function showHello() {
+    $("toast").hidden = true;
+    $("helloTitle").textContent = helloName();
+    $("helloSteps").innerHTML = helloSteps().map(([e, t]) => `<li><span class="he" aria-hidden="true">${e}</span><span>${t}</span></li>`).join("");
+    $("helloRead").hidden = !state.sound || !hasSpeech;
+    $("hello").hidden = false;
+    $("hello").scrollTop = 0;
+    logEv("K", "hallo");
+    try { $("helloGo").focus({ preventScroll: true }); } catch (e) { $("helloGo").focus(); }
+  }
+  function closeHello() {
+    if ($("hello").hidden) return;
+    if (!state.seen.includes("hallo")) { state.seen.push("hallo"); save(); }
+    stopSpeech();
+    $("hello").hidden = true;
+    // Die Zeit mit dem Startbildschirm zählt nicht als Rechenzeit (wie bei den Erklär-Karten)
+    if ($("explain").hidden) { shownAt = performance.now(); pausedMs = 0; firstMs = null; tryAt = 0; focusAnswer(); }
+    if (!overlayOpen() && state.cfg.readTask && task) speak(taskWords(task), false, taskParts(task));
+  }
+  $("helloGo").addEventListener("click", closeHello);
+  $("helloRead").addEventListener("click", () => speak(helloSay(), true));
+
   // ---------- Start ----------
   try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch (e) { /* kein Problem */ }
   buildParents();
@@ -6640,6 +6701,7 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
   renderSaveStatus();
   drawBackdrop();
   newTask();
+  if (!state.seen.includes("hallo")) showHello();
   initCloud();
   setTimeout(() => checkUpdate(false), 8000);
 })();
