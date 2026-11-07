@@ -626,10 +626,10 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
 .kind-svg .kw-lab { font-size: 14px; fill: var(--plum); }
 .kind-svg .kw-lab.new { fill: #a8740e; } .kind-svg .kw-lab.gone { fill: #9a7a8a; } .kind-svg .kw-lab.ok { fill: var(--green); font-size: 18px; }
 .kw-table { fill: #e9d6b4; stroke: #b8956a; stroke-width: 1.5; }
-.kw-c10 { fill: #e2b33c; stroke: #9a7414; stroke-width: 1.4; }
+.kw-c10 { fill: #cdd3dc; stroke: #737c8a; stroke-width: 1.4; }   /* US: Dime ist silbern */
 .kw-c1 { fill: #c8744a; stroke: #8a4424; stroke-width: 1.4; }
 .kw-cin { fill: none; stroke: rgba(80, 50, 10, .35); stroke-width: 1; }
-.kind-svg .kw-ct10 { font-size: 13px; fill: #6a4a08; } .kind-svg .kw-ct1 { font-size: 12px; fill: #5a2a12; }
+.kind-svg .kw-ct10 { font-size: 12px; fill: #3b4350; } .kind-svg .kw-ct1 { font-size: 10px; fill: #5a2a12; }
 .kind-svg .kw-num { font-size: 46px; fill: var(--ink); }
 .kw-arrow { fill: none; stroke: var(--plum); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
 .kw-tafel { fill: #fff; stroke: #8a7a9a; stroke-width: 2; }
@@ -724,7 +724,7 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
 .ex-text .nb { white-space: nowrap; }
 /* Startbildschirm (US 1.18): sagt beim ersten Start Hallo und erklärt das Spiel in fünf kurzen Schritten */
 #hello { z-index: 14; }   /* über der Erklär-Karte (13): erst Hallo, danach die Karte der ersten Aufgabe */
-.hello-sheet h2 { font-size: 1.7rem; margin: 2px 0 4px; }
+.hello-sheet h2 { font-size: 1.7rem; margin: 2px 0 4px; overflow-wrap: anywhere; }
 .hello-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; text-align: left; }
 .hello-steps li { display: grid; grid-template-columns: 2.1rem 1fr; align-items: center; gap: 10px; font-size: 1.05rem; line-height: 1.35;
   background: #fffaf0; border-radius: 10px; box-shadow: inset 0 0 0 1px #e6d3a8; padding: 8px 10px; }
@@ -2264,7 +2264,9 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
   })();
   // ---------- Hintergrund: Märchenszene wie mit Buntstift ins Rechenheft gemalt ----------
   // Die Szene wird für die echte Fenstergröße komponiert und füllt das ganze Blatt:
-  // oben Himmel mit Drache, Ballon und Wolken, in der Mitte Burg und Berge, unten Ritter, Zelt, Einhorn und Bach.
+  // oben Himmel mit Drache, Ballon und Wolken, in der Mitte Burg und Berge, unten Ritter, Zelt, Fuchs, Elfe und Bach mit Brücke.
+  // Ab 1.18.1: Fuchs statt grasendem Einhorn, Elfe statt Babydrache mit Höhle, Bogenbrücke statt flachem Brett
+  // (Rückmeldung: Einhorn sah aus wie ein Vogel mit Schnabel, der Drache wie eine Katze mit Flügeln, die Brücke schwebte).
   // Schraffur-Muster plus Papierkorn und leicht zittrige Konturen; das Karopapier scheint überall durch.
   function backdropSVG(w, h) {
     const C = {
@@ -2354,20 +2356,32 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
       P("M0 -96L-16 -40V0H16V-40Z", "snow", 1.4) +
       P("M-46 -40H46l-6 10l-8 -6l-8 6l-8 -6l-8 6l-8 -6l-8 6l-8 -6l-8 6l-8 -6l-6 6Z", "r5", 1.4) +
       P("M-10 0v-22a10 10 0 0 1 20 0v22Z", "trunk", 1.4);
-    const unicorn =
-      L("M-24 -30L-26 0M-16 -30L-14 0M16 -30L14 0M24 -30L26 0", C.stone, 4.5) +
-      L("M-30 -42C-44 -40 -48 -26 -42 -14", C.r6, 4) + L("M-30 -40C-40 -32 -42 -22 -38 -12", C.r1, 3) +
-      E(0, -40, 30, 13, "snow") +
-      P("M18 -48L38 -18L48 -14L46 -6L32 -8L14 -34Z", "snow", 1.8) +
-      L("M20 -50C26 -42 30 -34 36 -26", C.r1, 3) + L("M16 -48C22 -40 26 -30 30 -24", C.r3, 3) + L("M14 -44C18 -38 22 -30 24 -26", C.r5, 3) +
-      P("M44 -12L60 -2L46 -6Z", "sun", 1.4) + `<circle cx="40" cy="-12" r="1.6" fill="#3b2f45"/>`;
-    const cave = P("M-60 0C-60 -40 -30 -66 4 -66C40 -66 66 -40 66 0Z", "stone", 2) + P("M-34 0C-34 -26 -18 -40 4 -40C26 -40 40 -26 40 0Z", "lav", 1.6, "#8f84a8");
-    const babyDragon =
-      L("M-14 -6C-30 -4 -36 -16 -30 -24", C.orange, 4) + P("M-32 -28l-6 -6l8 2Z", "orange", 1.2) +
-      E(0, -14, 15, 13, "orange") + E(2, -10, 8, 7, "sand", 0, 1.2) +
-      P("M-6 -24C-16 -40 -26 -40 -30 -32C-22 -32 -18 -26 -10 -20Z", "r6", 1.4) +
-      O(10, -32, 10, "orange", 1.8) + L("M6 -42l-2 -6M14 -42l2 -6", C.trunk, 1.8) + `<circle cx="14" cy="-33" r="1.6" fill="#3b2f45"/>` +
-      L("M-8 0v-4M8 0v-4", C.trunk, 3);
+    // Fuchs, sitzend, Blick nach rechts: buschiger Schwanz mit weißer Spitze, weiße Brust, Spitzohren, spitze Schnauze
+    const fox =
+      P("M-12 -4C-38 0 -54 -14 -50 -34C-48 -44 -38 -48 -30 -44C-36 -32 -30 -18 -10 -14Z", "orange", 1.8) +
+      P("M-50 -34C-48 -44 -38 -48 -30 -44C-34 -40 -36 -36 -36 -32C-40 -30 -46 -30 -50 -34Z", "snow", 1.4) +
+      P("M-16 0C-22 -18 -16 -40 0 -44C16 -42 20 -22 14 0Z", "orange", 1.8) +
+      P("M2 -40C12 -34 12 -14 6 -2C0 -10 -4 -28 2 -40Z", "snow", 1.4) +
+      L("M0 0V-12M8 0V-12", C.trunk, 3.2) +
+      P("M-8 -50C-8 -60 0 -66 8 -64C14 -62 22 -56 30 -52C24 -48 14 -44 6 -44C-2 -44 -8 -46 -8 -50Z", "orange", 1.8) +
+      P("M-6 -58L-10 -76L4 -64Z", "orange", 1.6) + P("M4 -64L8 -80L16 -62Z", "orange", 1.6) +
+      P("M-5 -60L-7 -70L1 -63Z", "snow", 1) + P("M6 -64L8 -73L13 -63Z", "snow", 1) +
+      P("M8 -48C14 -46 22 -48 30 -52C24 -46 14 -44 8 -46Z", "snow", 1.2) +
+      `<circle cx="30" cy="-52" r="2.6" fill="#3b2f45"/>` + L("M9 -56Q12 -58 15 -56", "#3b2f45", 1.8);
+    // Elfe (Kind) mit Flügeln, Blütenkleid, Spitzohren und Zauberstab; lächelt
+    const star = (x, y, r) => P(`M${x} ${y - r}L${f1(x + r * 0.3)} ${f1(y - r * 0.3)}L${x + r} ${y}L${f1(x + r * 0.3)} ${f1(y + r * 0.3)}L${x} ${y + r}L${f1(x - r * 0.3)} ${f1(y + r * 0.3)}L${x - r} ${y}L${f1(x - r * 0.3)} ${f1(y - r * 0.3)}Z`, "sun", 1.2);
+    const elf =
+      E(-16, -50, 11, 20, "r5", -35, 1.4) + E(16, -50, 11, 20, "r5", 35, 1.4) + E(-13, -32, 8, 12, "r6", -60, 1.2) + E(13, -32, 8, 12, "r6", 60, 1.2) +
+      L("M-5 -14V-2M5 -14V-2", C.sand, 3) + L("M-9 -1h6M3 -1h6", C.r6, 3) +
+      P("M-7 -50H7L20 -14Q0 -8 -20 -14Z", "rose", 1.8) + L("M-16 -20Q0 -15 16 -20", C.r6, 1.6) +
+      L("M-6 -46L-16 -30M6 -46L18 -58", C.sand, 3) +
+      L("M18 -58L26 -78", C.trunk, 1.8) + star(27, -81, 7) +
+      [[36, -88, 1.8], [40, -76, 1.4], [31, -94, 1.2]].map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${C.sun}"/>`).join("") +
+      P("M-8 -62L-16 -70L-7 -57Z", "sand", 1.2) + P("M8 -62L16 -70L7 -57Z", "sand", 1.2) +
+      O(0, -60, 9.5, "sand", 1.6) +
+      P("M-10 -60C-12 -76 12 -76 10 -60C6 -67 -6 -67 -10 -60Z", "r2", 1.4) + L("M-10 -60C-13 -50 -11 -44 -7 -42M10 -60C13 -50 11 -44 7 -42", C.r2, 3) +
+      O(-6, -71, 2.6, "r1", 1) + O(0, -73, 2.6, "r4", 1) + O(6, -71, 2.6, "r5", 1) +
+      `<circle cx="-3.5" cy="-60" r="1.5" fill="#3b2f45"/><circle cx="3.5" cy="-60" r="1.5" fill="#3b2f45"/>` + L("M-3 -55.5Q0 -53 3 -55.5", "#c0566e", 1.3);
     const tree = (s) => at(0, 0, s, `<path d="M-4 0l2 -34h4l2 34Z" fill="url(#h-trunk)" stroke="${C.trunk}" stroke-width="1.8"/>` + O(0, -50, 24, "green") + O(-14, -38, 15, "green") + O(15, -40, 16, "green"));
     const pine = (s) => at(0, 0, s, P("M0 -78L18 -44h-8L24 -16h-10L28 0H-28L-14 -16h-10L-10 -44h-8Z", "dark", 1.8));
     const mush = P("M-3 0v-10h6v10Z", "sand", 1.5) + P("M-13 -9q13 -20 26 0Z", "red", 1.6) + `<circle cx="-4" cy="-14" r="2" fill="#fff"/><circle cx="5" cy="-12" r="1.6" fill="#fff"/>`;
@@ -2397,9 +2411,12 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
     const path = P(`M${f1(cx - 14 * k)} ${f1(castleY)}C${f1(cx - 30 * k)} ${f1(Y(0.72))} ${f1(cx - 90 * k)} ${f1(Y(0.8))} ${f1(cx - 60 * k)} ${f1(Y(0.9))}C${f1(cx - 40 * k)} ${f1(Y(0.96))} ${f1(cx - 70 * k)} ${f1(h)} ${f1(cx - 90 * k)} ${f1(h + 10)}H${f1(cx + 30 * k)}C${f1(cx + 10 * k)} ${f1(Y(0.95))} ${f1(cx + 20 * k)} ${f1(Y(0.86))} ${f1(cx - 10 * k)} ${f1(Y(0.78))}C${f1(cx - 30 * k)} ${f1(Y(0.72))} ${f1(cx + 10 * k)} ${f1(Y(0.68))} ${f1(cx + 14 * k)} ${f1(castleY)}Z`, "sand", 1.8);
     const sx = X(0.82);
     const stream = P(`M${f1(sx)} ${f1(Y(0.66))}C${f1(sx + 40 * k)} ${f1(Y(0.74))} ${f1(sx - 30 * k)} ${f1(Y(0.82))} ${f1(sx + 20 * k)} ${f1(Y(0.9))}C${f1(sx + 50 * k)} ${f1(Y(0.95))} ${f1(sx + 30 * k)} ${f1(h)} ${f1(sx + 40 * k)} ${f1(h + 10)}H${f1(sx + 90 * k)}C${f1(sx + 80 * k)} ${f1(Y(0.94))} ${f1(sx + 60 * k)} ${f1(Y(0.88))} ${f1(sx + 30 * k)} ${f1(Y(0.82))}C${f1(sx + 10 * k)} ${f1(Y(0.76))} ${f1(sx + 30 * k)} ${f1(Y(0.7))} ${f1(sx + 12 * k)} ${f1(Y(0.66))}Z`, "water", 1.6);
-    const bridgeY = Y(0.82) + 6 * k, bx = sx + 26 * k;
-    const bridge = at(bx, bridgeY, k, P("M-44 -6H44V6H-44Z", "trunk", 1.8) + L("M-30 -6V6M-16 -6V6M-2 -6V6M12 -6V6M26 -6V6", C.trunk, 1.2) +
-      L("M-40 -6V-22M40 -6V-22M-40 -20H40", C.trunk, 2.2));
+    const bridgeY = Y(0.82) + 6 * k, bx = sx + 12 * k;   // mittig über dem Bach (bei +26·k stand die halbe Brücke auf der Wiese)
+    // Bogenbrücke aus Holz: Enden auf beiden Ufern, Geländer folgt dem Bogen
+    const bridge = at(bx, bridgeY, k, P("M-50 4Q0 -26 50 4L50 10Q0 -18 -50 10Z", "trunk", 1.8) +
+      L("M-34 -4V3M-18 -9V-2M0 -11V-4M18 -9V-2M34 -4V3", C.trunk, 1.2) +
+      L("M-46 2Q0 -40 46 2", C.trunk, 2.2) + L("M-46 2V-12M-24 -13V-25M0 -18V-29M24 -13V-25M46 2V-12", C.trunk, 2) +
+      L("M-46 -12Q0 -46 46 -12", C.trunk, 2.4));
     const fairy =
       E(-7, -16, 7, 11, "r5", -30, 1.2) + E(7, -16, 7, 11, "r5", 30, 1.2) + P("M0 -20L7 0H-7Z", "rose", 1.4) + O(0, -24, 4.5, "sand", 1.4) +
       L("M3 -14L14 -24", C.trunk, 1.4) + `<circle cx="15" cy="-25" r="2.4" fill="${C.sun}"/>` +
@@ -2425,13 +2442,13 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
       P(wave(Y(0.64), 10 * k, 1), "sage"),
       at(cx, castleY, k, castle),
       at(X(0.15), Y(0.7), 0.8 * k, tent),
-      at(X(0.93), Y(0.7), 0.8 * k, cave), at(X(0.9), Y(0.7), 0.9 * k, babyDragon),
+      at(X(0.9), Y(0.71), 0.9 * k, elf),
       at(X(0.05), Y(0.7), k, pine(0.9)), at(X(0.3), Y(0.69), k, tree(0.9)), at(X(0.67), Y(0.69), k, pine(0.8)), at(X(0.75), Y(0.7), k, tree(0.8)),
       P(wave(Y(0.76), 12 * k, 3), "green"),
       path, stream, bridge,
       at(X(0.57), Y(0.7), 0.75 * k, knightStanding),
       at(X(0.28), Y(0.88), k, knightOnHorse),
-      at(X(0.68), Y(0.84), 0.9 * k, unicorn, true),
+      at(X(0.68), Y(0.85), 0.95 * k, fox),
       at(X(0.08), Y(0.85), k, tree(1)), at(X(0.97), Y(0.92), k, pine(1)),
       at(X(0.4), Y(0.94), k, mush), at(X(0.62), Y(0.97), k, mush), at(X(0.12), Y(0.97), k, mush),
       at(X(0.04), Y(0.98), k, flower("rose")), at(X(0.2), Y(0.95), k, flower("r6")), at(X(0.47), Y(0.99), k, flower("rose")), at(X(0.76), Y(0.97), k, flower("r5")), at(X(0.9), Y(0.99), k, flower("rose")),
@@ -2476,7 +2493,7 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
     { t: "06", n: "Langshan", ei: "braun", k: "schwarz", f: "From China, with long legs. It comes in black and white, and the black feathers shine green in the sun." },
     { t: "07", n: "Wyandotte", ei: "braun", k: "grau", f: "From America. Each feather has a dark edge, as if someone drew it with a pen." },
     { t: "08", n: "Orpington", ei: "braun", k: "gelb", f: "From England, named after the town of Orpington. Soft, round, and cozy." },
-    { t: "09", n: "Java", ei: "braun", k: "schwarz", f: "Even with its name, it is one of the oldest chicken breeds from America." },
+    { t: "09", n: "Java", ei: "braun", k: "schwarz", f: "It is named after an island in Asia, but it is one of the oldest American breeds." },
     { t: "14", n: "Yokohama", ei: "creme", k: "gelb", s: 1, f: "From Japan. The rooster has an extra long white tail." },
     { t: "15", n: "Phoenix", ei: "creme", k: "gelb", s: 1, f: "From Japan. The tail feathers of some roosters keep growing for years and get longer than a grown-up is tall." },
     { t: "16", n: "Crevecoeur", ei: "weiss", k: "schwarz", f: "From France, with a feather crest and a beard. It is almost always all black." },
@@ -2513,7 +2530,7 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
     { t: "11", n: "Old English Game", ei: "creme", k: "grau", f: "A very old breed from England. Slim, quick, and proud, with smooth, shiny feathers." },
     { t: "12", n: "Belgian Game", ei: "creme", k: "grau", f: "From Belgium. Tall and upright, with long legs, as if it were standing on tiptoe." },
     { t: "13", n: "Aseel", ei: "creme", k: "gelb", f: "From India, one of the oldest chicken breeds in the world. It stands up very straight, and its feathers lie close and tight." },
-    { t: "46", n: "Rumpless", ei: "weiss", k: "grau", s: 1, f: "It has no tail at all! A tiny piece of its back is missing, so it looks all round in the back." },
+    { t: "46", n: "Rumpless", ei: "weiss", k: "grau", s: 1, f: "It was born without a tail, so its back end looks nice and round." },
     { t: "51", n: "Creeper", ei: "weiss", k: "gelb", f: "It has very short legs and waddles a bit when it walks, like a little dachshund dog." },
     { t: "54", n: "Rosecomb Bantam", ei: "weiss", k: "schwarz", f: "A small, perky bantam chicken with a flat rose-shaped comb. Bungartz painted it in black and in white." },
     { t: "59", n: "Game Bantam", ei: "creme", k: "gelb", f: "A small, quick bantam chicken with long legs that stands up very straight." },
@@ -2538,9 +2555,9 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
   // So bekommen auch alle Tiere aus älteren Spielständen eine, ohne dass sich der Spielstand ändert.
   const EIGENARTEN = ["loves taking sand baths", "likes to sleep on the highest perch", "collects shiny pebbles", "counts to ten while pecking",
     "clucks loudly when the sun comes out", "likes to hide under the rhubarb", "follows you when you come into the garden", "likes to lie in the sun and stretch out one wing",
-    "likes to hop up on the fence", "peeks curiously into every watering can", "builds nests out of hay", "puffs up its feathers when it gets cold",
-    "loves to chase butterflies", "scratches out the best little holes", "spends hours cleaning its feathers", "likes to nap in the shade after lunch",
-    "zooms off as soon as there are worms", "has a favorite spot under the apple tree", "tells itself quiet little stories", "bravely chases away the sparrows",
+    "likes to hop up on the fence", "peeks curiously into every watering can", "builds nests out of hay", "fluffs up when it gets cold",
+    "loves to chase butterflies", "scratches out the best little holes", "loves to preen for hours", "likes to nap in the shade after lunch",
+    "zooms off as soon as there are worms", "has a favorite spot under the apple tree", "hums quiet little songs", "bravely chases away the sparrows",
     "likes to stand on one leg", "loves to be petted", "likes to look at the moon at night", "jumps over every puddle",
     "explores every corner of the garden", "likes to drink from the birdbath", "is a little bit shy", "dances in the rain",
     "likes to sit on the wheelbarrow", "likes to listen when you do math"];
@@ -2562,7 +2579,7 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
   const HUHN_NAMEN_MEHR = ["Abby", "Annie", "Betty", "Bonnie", "Callie", "Daphne", "Dolly", "Edie", "Elsie", "Flora", "Frannie", "Gigi", "Georgia", "Hattie", "Holly",
     "Ivy", "Jenny", "Joy", "June", "Kiki", "Lacey", "Lola", "Maisie", "Marigold", "Mimi", "Misty", "Nora", "Opal", "Pansy", "Peaches",
     "Pixie", "Pumpkin", "Queenie", "Sasha", "Sophie", "Stella", "Sugar", "Sweetie", "Trixie", "Tulip", "Violet", "Willow", "Xena", "Yoyo", "Zoe",
-    "Zinnia", "Bluebell", "Buttercup", "Cupcake", "Dixie", "Emmy", "Freckles", "Jellybean", "Marshmallow", "Muffin", "Noodle", "Petunia", "Sparkle", "Waffles"];
+    "Zinnia", "Bluebell", "Buttercup", "Cupcake", "Posy", "Emmy", "Freckles", "Jellybean", "Marshmallow", "Muffin", "Noodle", "Petunia", "Sparkle", "Waffles"];
   const HAHN_NAMEN_MEHR = ["Arlo", "Bandit", "Barney", "Beau", "Bob", "Boomer", "Buster", "Cash", "Chester", "Cody", "Cooper", "Dexter", "Eddie", "Elmo", "Frankie", "Freddie",
     "Gizmo", "Hank", "Harley", "Hunter", "Jasper", "Jesse", "Joey", "Kenny", "Lucky", "Marty", "Moose", "Murphy", "Ned", "Otis", "Ozzie", "Percy",
     "Ralph", "Rocco", "Rudy", "Scout", "Skip", "Sonny", "Spike", "Taco", "Tex", "Tommy", "Waldo", "Wally", "Woody", "Zeke", "Zippy"];
@@ -2599,7 +2616,7 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
     mk("p7", "plus", "Two-digit plus two-digit", "38 + 47", 100, true, "Coin Makers", () => { const t1 = rand(1, 7); return plus(10 * t1 + rand(1, 9), 10 * rand(1, 8 - t1) + rand(1, 9)); }),
     mk("m7", "minus", "Two-digit minus two-digit", "85 − 47", 100, true, "Shield Painters", () => { const t1 = rand(1, 7), t = plus(10 * t1 + rand(1, 9), 10 * rand(1, 8 - t1) + rand(1, 9)); return minus(t.result, t.b); }),
   ];
-  const ROW_ZUNFT = { 1: "Messengers", 2: "Bakers", 3: "Weavers", 4: "Cabinetmakers", 5: "Potters", 6: "Blacksmiths", 7: "Millers", 8: "Stonecutters", 9: "Gardeners", 10: "Builders" };
+  const ROW_ZUNFT = { 1: "Messengers", 2: "Bakers", 3: "Weavers", 4: "Cabinetmakers", 5: "Potters", 6: "Blacksmiths", 7: "Millers", 8: "Stonemasons", 9: "Gardeners", 10: "Builders" };
   for (let r = 1; r <= 10; r++) {
     const easy = [1, 2, 5, 10].includes(r);
     SKILLS.push(mk("x" + r, "mal", `${r}s table`, `${r} × ${r === 7 ? 8 : 7}`, 0, !easy, ROW_ZUNFT[r], () => anyOrder(r, easy ? rand(1, 10) : rand(3, 10))));
@@ -2611,7 +2628,7 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
     mk("l2", "luecke", "Missing number: adding to 100", "34 + □ = 50", 100, true, "Shoemakers", () => {
       const a = 10 * rand(1, 8) + rand(1, 9);
       // ab 1.17 gestuft: bis sie hier Gesellin ist, meist nur bis zum nächsten vollen Zehner (34 + □ = 40) oder zu einem glatten Zehner
-      // (34 + □ = 60). Im Protokoll waren 15 % beim ersten Versuch richtig, zwei Sitzungen endeten an solchen Aufgaben.
+      // (34 + □ = 60). Offene Lücken bis 100 waren am Anfang zu schwer.
       if (gradeOf("l2") < 2) {
         const v = Math.random(), next = 10 - (a % 10);
         const b = v < 0.6 ? next : v < 0.9 ? next + 10 * rand(0, Math.max(0, Math.floor((99 - a - next) / 10))) : rand(3, Math.min(20, 99 - a));
@@ -2638,7 +2655,7 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
   // pic: "verteilen" (Teilen als Verteilen auf b Teller) oder "aufteilen" (immer b in eine Gruppe); item: welche Dinge im Bild
   const divT = (b, q, extra) => ({ a: b * q, b, op: ":", result: q, ...extra });
   SKILLS.push(
-    mk("d1", "teilen", "Sharing with pictures", "12 cupcakes on 3 plates", 0, false, "Candy Makers", () => divT(rand(2, 5), rand(2, 5), { pic: "verteilen", item: rand(0, 2) })),
+    mk("d1", "teilen", "Sharing with pictures", "12 cupcakes on 3 plates", 0, false, "Pastry Bakers", () => divT(rand(2, 5), rand(2, 5), { pic: "verteilen", item: rand(0, 2) })),
     mk("d2", "teilen", "Grouping with pictures", "15 apples, 5 in each basket", 0, false, "Merchants", () => divT(rand(2, 5), rand(2, 6), { pic: "aufteilen", item: rand(0, 2) })),
     mk("d3", "teilen", "Dividing by 2, 5, and 10", "20 ÷ 5", 0, false, "Wheelwrights", () => divT(pick([2, 5, 10]), rand(1, 10))),
     mk("d4", "teilen", "Dividing by 3, 4, and 6", "24 ÷ 6", 0, true, "Hat Makers", () => divT(pick([3, 4, 6]), rand(2, 10))),
@@ -2692,7 +2709,7 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
     mk("f1", "folgen", "Number patterns", "4, 8, 12, 16, ?", 20, false, "Bead Makers", (N) => {
       const top = N >= 100 ? 100 : 20;
       // ab 1.17 gestuft: bis Gesellin nur aufwärts, die letzte Perle, Sprünge wie beim Einmaleins (2, 5, 10) ab einer Zahl der Reihe.
-      // Im Protokoll scheiterten rückwärts laufende Ketten und Lücken in der Mitte, und bei jeder Kette kam sofort der Tipp.
+      // Rückwärts laufende Ketten und Lücken in der Mitte waren am Anfang zu schwer.
       if (gradeOf("f1") < 2) { const st = pick(N >= 100 ? [2, 5, 10] : [1, 2, 5].filter((x) => 5 * x <= top)); return folgeT(arith(st * rand(0, Math.floor(top / st) - 6), st), `+${st}`, true); }
       const st = pick((N >= 100 ? [2, 3, 4, 5, 10, 6, 7, 8] : [1, 2, 3, 4]).filter((x) => 5 * x <= top));
       if (Math.random() < 0.75) return folgeT(arith(rand(0, top - 5 * st), st), `+${st}`);
@@ -2738,7 +2755,7 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
   }
   SKILLS.push(
     mk("w1", "stelle", "Tens and ones", "4 rods and 7 cubes", 100, false, "Raft Builders", () => stelleT("bild", rand(1, 9), rand(0, 9))),
-    mk("w2", "stelle", "Counting money", "10-cent and 1-cent coins", 100, false, "Money Changers", () => stelleT("geld", rand(1, 9), rand(0, 9))),
+    mk("w2", "stelle", "Counting money", "dimes and pennies", 100, false, "Money Changers", () => stelleT("geld", rand(1, 9), rand(0, 9))),
     mk("w3", "stelle", "Breaking numbers apart", "47 = □ tens + 7 ones", 100, false, "Typesetters", () => {
       const z = rand(1, 9), e = rand(0, 9), ask = Math.random() < 0.55 ? "z" : "e";
       return stelleT("zerlegen", z, e, { ask, result: ask === "z" ? z : e, key: `Wz${z},${e}${ask}`, text: `zerlegen: ${10 * z + e}, gesucht ${ask === "z" ? "Zehner" : "Einer"}` });
@@ -2859,8 +2876,8 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
     titel: ["f", "m"], hilfe: ["auto", "strahl", "punkte"], teilenStufen: ["schritt", "alle"], rewardEvery: [3, 5, 7, 10], goldEvery: [0, 50, 100, 200], belohnung: ["hof", "bilder"], stimme: ["warm", "geraet"], tippWait: [0, 10, 20],
   };
   const DATA_GEN = 2;   // Spielstände ab Version 1.1; ältere beginnen einmalig bei null (Einstellungen bleiben)
-  // Einmalige Anpassungen alter Spielstände. mig 1 (1.13): Rechendreiecke aus. Im Protokoll waren 1 von 32 beim ersten Versuch richtig,
-  // sie versteht das Prinzip noch nicht. Die Eltern können sie im Menü wieder einschalten (das gilt dann für immer).
+  // Einmalige Anpassungen alter Spielstände. mig 1 (1.13): Rechendreiecke aus, weil das Prinzip
+  // am Anfang noch zu schwer war. Die Eltern können sie im Menü wieder einschalten (das gilt dann für immer).
   const MIGRATION = 1;
   // Rechenarten ab 1.9: bleiben aus, bis die Eltern sie einschalten (auch bei alten Spielständen)
   const NEW_OPS = ["tricks", "mauer", "dreieck", "folgen", "schaetzen", "raetsel", "stelle", "vergleich"];
@@ -3235,12 +3252,12 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
         const c = `${n} ${ROEMISCH[k]}`;
         if (out.length < 3 && c.length <= 16 && !used.has(c) && !out.includes(c)) out.push(c);
       }
-    for (const c of ["Fluffy", "Peeps", "Chickie"]) if (out.length < 3 && !out.includes(c)) out.push(c);
+    for (const c of ["Fluffy", "Peep", "Chickie"]) if (out.length < 3 && !out.includes(c)) out.push(c);
     return out.slice(0, 3);
   }
 
   // Ratebremse (ab 1.13): Eine falsche Antwort, die so aussieht, als wäre sie nur getippt, um weiterzukommen, zählt nicht als Versuch.
-  // Im Protokoll waren 177 von 578 Fehlversuchen weniger als 3 s nach dem vorigen, viele davon „9“, „99“, „66“, „659“, und 45× wurde bis zur Lösung durchgeklickt.
+  // Typisch sind sehr schnelle Fehlversuche wie „9“, „99“ oder „66“, nur um bis zur Lösung durchzuklicken.
   // since: Millisekunden seit dem letzten gezählten Versuch (oder seit die Aufgabe erschien). first: noch kein Versuch bei dieser Aufgabe bzw. diesem Schritt.
   const GUESS_FIRST_MS = 1500, GUESS_GAP_MS = 3500;
   // known (ab 1.16.2): Der Fehler-Detektiv kennt diesen Fehler (z. B. 314 für 3 Stangen und 14 Würfel). Dann ist es ein echter Versuch,
@@ -3273,7 +3290,7 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
   const ergRange = (t) => (t.op === "+" ? [t.a, t.c] : [t.c, t.a]);
 
   // Fehler-Detektiv: erkennt typische Flüchtigkeitsfehler und gibt einen freundlichen Hinweis, ohne die Lösung zu verraten
-  const OPNAME = { "+": "plus", "−": "minus", "·": "times" };
+  const OPNAME = { "+": "an addition", "−": "a subtraction", "·": "a multiplication" };
   function diagnose(t, val) {
     if (!Number.isFinite(val) || val === t.result) return null;
     if (t.kind) return diagnoseKind(t, val);
@@ -3304,7 +3321,7 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
     }
     const a = t.a, b = t.b, r = t.result, d = val - r;
     const alt = t.op === "+" ? [a - b, a * b] : [a + b];
-    if (alt.includes(val)) return { kind: "op", text: `Look at the sign again: this is a ${OPNAME[t.op]} problem.` };
+    if (alt.includes(val)) return { kind: "op", text: `Look at the sign again: this is ${OPNAME[t.op]} problem.` };
     if (val === a || val === b) return { kind: "copy", text: "That's one of the numbers in the problem. What is the answer at the end?" };
     const sv = String(val), sr = String(r);
     if (sv.length === sr.length && sv.length >= 2 && [...sv].reverse().join("") === sr) return { kind: "dig", text: "Almost: the digits are switched around. Tens first, then ones." };
@@ -3327,14 +3344,14 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
       if (val === 1) return { kind: "other", text: "Are both sides really the same? Take another close look." };
       if (t.result === 1) return { kind: "other", text: typeof t.l === "number" && typeof t.r === "number" ? "Compare digit by digit: tens first, then ones." : "Work out both sides. Maybe they come out the same?" };
       if (typeof t.l !== "number" || typeof t.r !== "number") return { kind: "op", text: "Work out the problem first. Then compare the two numbers." };
-      if (ls.length === 2 && rs.length === 2 && ls[0] === rs[1] && ls[1] === rs[0]) return { kind: "dig", text: "Look at the tens first. One ten is worth more than lots of ones." };
+      if (ls.length === 2 && rs.length === 2 && ls[0] === rs[1] && ls[1] === rs[0]) return { kind: "dig", text: "Look at the tens first. One ten is worth more than 9 ones." };
       if (ls.length === 2 && rs.length === 2 && ls[0] === rs[0]) return { kind: "one", text: "The tens are the same. So the ones decide." };
       return { kind: "op", text: "Other way around! The point always faces the smaller number." };
     }
     if (t.kind === "stelle") {
       if (t.how === "zerlegen") return val === (t.ask === "z" ? t.e : t.z) ? { kind: "dig", text: `The tens come first, the ones come last. We need the ${t.ask === "z" ? "tens" : "ones"}.` } : null;
       if (t.how === "zehner" && val === (t.op === "+" ? t.a + t.k : t.a - t.k)) return { kind: "ten", text: `Here whole tens ${t.op === "+" ? "get added" : "get taken away"}: ${t.b} ${t.k === 1 ? "is 1 ten rod" : `is ${t.k} ten rods`}. The ones stay the same.` };
-      if (t.how !== "zehner" && val === t.z + t.e) return { kind: "ten", text: t.how === "geld" ? "A gold coin is worth 10 cents, not 1 cent. Count by tens." : "One rod is 10 cubes. Count the rods by tens: 10, 20, 30 …" };
+      if (t.how !== "zehner" && val === t.z + t.e) return { kind: "ten", text: t.how === "geld" ? "A dime is worth 10 cents, not 1 cent. Count by tens." : "One rod is 10 cubes. Count the rods by tens: 10, 20, 30 …" };
       if (t.how === "buendeln" && val === 10 * t.z + (t.e % 10)) return { kind: "ten", text: "10 single cubes make a new rod. Bundle them first!" };
       if (t.how === "buendeln" && val === 100 * t.z + t.e) return { kind: "ten", text: "More than 9 ones don't fit in the ones place. Turn 10 cubes into a rod." };
     }
@@ -3373,15 +3390,15 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
       say: "You already know five times seven is thirty-five. Six times seven is just one more row: thirty-five plus seven. That's how an easy problem helps you solve a hard one." },
     mauer: { t: "The Number Wall", x: "Two bricks side by side add up to the brick above them: 3 + 5 = 8. That's how you can find every brick.",
       say: "Two bricks side by side add up to the brick above them: three plus five is eight. That's how you can find every brick." },
-    dreieck: { t: "The Number Triangle", x: "Each number on the outside is what the two spaces inside next to it add up to: 4 + 3 = 7.",
-      say: "Each number on the outside is what the two spaces inside next to it add up to: four plus three is seven." },
+    dreieck: { t: "The Number Triangle", x: "Each outside number is the sum of the two inside numbers next to it: 4 + 3 = 7.",
+      say: "Each outside number is the sum of the two inside numbers next to it: four plus three is seven." },
     folge: { t: "The Bead String", x: "From bead to bead, the number always jumps by the same amount. Find the jump, and you know the next bead." },
     menge: { t: "Estimating", x: "Here you don't count, you estimate. 10 are circled. Imagine how many circles like that it would take to hold all of them.",
       say: "Here you don't count, you estimate. Ten are circled. Imagine how many circles like that it would take to hold all of them." },
     stelle: { t: "Rods and Cubes", x: "A rod has 10 cubes. That's one ten. A cube by itself is one. Count the rods first: 10, 20, 30. Then add the cubes.",
       say: "A rod has ten cubes. That's one ten. A cube by itself is one. Count the rods first: ten, twenty, thirty. Then add the cubes." },
-    geld: { t: "Counting Coins", x: "A gold coin is worth 10 cents. A copper coin is worth 1 cent. Count the gold ones by tens first, then add the copper ones.",
-      say: "A gold coin is worth ten cents. A copper coin is worth one cent. Count the gold ones by tens first, then add the copper ones." },
+    geld: { t: "Counting Coins", x: "A dime is worth 10 cents. A penny is worth 1 cent. Count the dimes by tens first, then add the pennies.",
+      say: "A dime is worth ten cents. A penny is worth one cent. Count the dimes by tens first, then add the pennies." },
     buendeln: { t: "Bundling", x: "When there are 10 cubes or more, you bundle them: 10 cubes make a new rod.",
       say: "When there are ten cubes or more, you bundle them: ten cubes make a new rod." },
     vergleich: { t: "The Scale", x: "The bigger number is heavier, so its side goes down. The point of the sign always faces the smaller number." },
@@ -3399,7 +3416,7 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
     hard: ["Wow, that was a brain teaser!", "Wow, you even got the hard one!", "Brain teaser pro!", "That was tricky, and you did it!"],
     again: ["Yes, now it's right!", "Good eye!", "Nicely fixed!"],
     stay: ["Great job sticking with it!", "You did it! Sticking with it pays off.", "That was tricky, and you solved it!", "Good thing you didn't give up!"],
-    shown: ["Good job! Next time it will go even better.", "That was a tricky one. You'll get the next one!"],
+    shown: ["Nice try! The next one will go even better.", "That was a tricky one. You'll get the next one!"],
     nudge1: ["Not quite. Try again.", "Almost! Check your math again.", "Take another close look."],
     mut1: ["Almost! Give it another try.", "Not quite yet, you can do it!"],
     mut2: ["Look at the help, then you'll get it.", "Don't worry, this one is tricky."],
@@ -3763,8 +3780,8 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
     { g: "x9", n: "strawberries", v: "are lying around", d: '<path d="M0 7C-6 3-7-2-4-4C-2-5 0-4 0-4S2-5 4-4C7-2 6 3 0 7Z" fill="#e5383c" stroke="#9a1a1e" stroke-width=".8"/><path d="M-3-4L0-7L3-4L0-5Z" fill="#4f9a44"/><g fill="#ffe08a"><circle cx="-2" cy="0" r=".6"/><circle cx="2" cy="1" r=".6"/><circle cx="0" cy="3" r=".6"/></g>' },
     { g: "p7", n: "coins", v: "are lying around", d: '<circle r="6" fill="#efc24a" stroke="#a87a12" stroke-width="1.1"/><circle r="3.8" fill="none" stroke="#a87a12" stroke-width=".7"/>' },
     { g: "p5", n: "pearls", v: "are lying around", d: '<circle r="5" fill="#f6f2fb" stroke="#b8acc8" stroke-width="1"/><circle cx="-1.6" cy="-1.8" r="1.5" fill="#fff"/>' },
-    { g: "p1", n: "candles", v: "are standing around", d: '<rect x="-2.6" y="-4" width="5.2" height="10" rx="1" fill="#f2dc9b" stroke="#b49a5a" stroke-width=".8"/><path d="M0-9C2-7 2-5.5 0-4.5-2-5.5-2-7 0-9Z" fill="#ff9a3c"/>' },
-    { g: "x7", n: "little flour sacks", v: "are standing around", d: '<path d="M-5 6C-6 1-5-3-2-5L-3-7H3L2-5C5-3 6 1 5 6Z" fill="#efe4c8" stroke="#a8946a" stroke-width=".9"/><path d="M-3-5H3" stroke="#a8946a" stroke-width="1"/>' },
+    { g: "p1", n: "candles", v: "are on the shelf", d: '<rect x="-2.6" y="-4" width="5.2" height="10" rx="1" fill="#f2dc9b" stroke="#b49a5a" stroke-width=".8"/><path d="M0-9C2-7 2-5.5 0-4.5-2-5.5-2-7 0-9Z" fill="#ff9a3c"/>' },
+    { g: "x7", n: "little flour sacks", v: "are on the shelf", d: '<path d="M-5 6C-6 1-5-3-2-5L-3-7H3L2-5C5-3 6 1 5 6Z" fill="#efe4c8" stroke="#a8946a" stroke-width=".9"/><path d="M-3-5H3" stroke="#a8946a" stroke-width="1"/>' },
   ];
   function mengeSort(t) {
     if (t.place) return t.place;
@@ -3882,7 +3899,7 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
   }
   function coinsSVG(t, mode) {
     const sorted = mode === "hint" || mode === "done", n = t.z + t.e;
-    const coin = (x, y, big) => `<g transform="translate(${KF(x)} ${KF(y)})"><circle r="${big ? 15 : 12}" class="${big ? "kw-c10" : "kw-c1"}"/><circle r="${big ? 11.5 : 9}" class="kw-cin"/><text y="${big ? 5 : 4.5}" class="${big ? "kw-ct10" : "kw-ct1"}">${big ? 10 : 1}</text></g>`;
+    const coin = (x, y, big) => `<g transform="translate(${KF(x)} ${KF(y)})"><circle r="${big ? 15 : 12}" class="${big ? "kw-c10" : "kw-c1"}"/><circle r="${big ? 11.5 : 9}" class="kw-cin"/><text y="${big ? 5 : 4.5}" class="${big ? "kw-ct10" : "kw-ct1"}">${big ? "10¢" : "1¢"}</text></g>`;
     let s = "";
     if (sorted) {
       for (let i = 0; i < t.z; i++) { const x = 160 - ((t.z - 1) * 34) / 2 + i * 34; s += coin(x, 34, true) + `<text x="${KF(x)}" y="64" class="kw-n">${10 * (i + 1)}</text>`; }
@@ -3940,7 +3957,7 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
   const KIND_DRAW = { trick: trickSVG, mauer: mauerSVG, dreieck: dreieckSVG, folge: folgeSVG, menge: mengeSVG, stelle: stelleSVG, vergleich: vergleichSVG };
   const kindSVG = (t, mode = "") => KIND_DRAW[t.kind](t, mode);
   function kindQuestion(t) {
-    if (t.kind === "trick") return `You know: ${t.known.k} × ${t.b} = ${t.known.p}. ${{ plus: "One more row", minus: "One less row", double: "Twice as many rows", half: "Half as many rows" }[t.how]}: What is ${t.a} × ${t.b}?`;
+    if (t.kind === "trick") return `You know: ${t.known.k} × ${t.b} = ${t.known.p}. ${{ plus: "One more row", minus: "One row fewer", double: "Twice as many rows", half: "Half as many rows" }[t.how]}: What is ${t.a} × ${t.b}?`;
     if (t.kind === "mauer") return "Number wall: two bricks side by side add up to the brick above them. Which number is missing?";
     if (t.kind === "dreieck") return "Number triangle: each number outside is what the two spaces inside next to it add up to. Which number is missing?";
     if (t.kind === "folge") return t.ask === t.seq.length - 1 ? "What comes next on the bead string? Find the rule!" : "Which bead is missing on the string? Find the rule!";
@@ -3975,7 +3992,7 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
     }
     if (t.kind === "folge") return `Look at the jumps between the beads. The rule is: ${t.rule}`;
     if (t.kind === "stelle") {
-      if (t.how === "geld") return "A gold coin is worth 10 cents. A copper coin is worth 1 cent. Count the gold ones by tens first, then add the copper ones.";
+      if (t.how === "geld") return "A dime is worth 10 cents. A penny is worth 1 cent. Count the dimes by tens first, then add the pennies.";
       if (t.how === "buendeln") return `10 cubes make a new rod. Then there are ${t.z + 1} rods and ${t.e - 10} ${t.e - 10 === 1 ? "cube" : "cubes"}.`;
       if (t.how === "zerlegen") return "The first digit tells the tens, the second tells the ones. Look at the picture: rods are tens, cubes are ones.";
       if (t.how === "zehner") return `${t.a} is ${t.z} ${t.z === 1 ? "ten" : "tens"} and ${t.e} ${t.e === 1 ? "one" : "ones"}. ${t.op === "+" ? "Add" : "Take away"} ${t.k} ${t.k === 1 ? "ten" : "tens"}. The ${t.e} ${t.e === 1 ? "one stays" : "ones stay"} just as ${t.e === 1 ? "it is" : "they are"}.`;
@@ -4174,7 +4191,7 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
     h += `<h3 class="hof-h">Incubator</h3>`;
     h += hof.eier.length ? `<div class="hof-box">${brutkastenSVG(hof.eier, "pk")}</div><p class="note">Problems until hatching: ${hof.eier.map((e) => left(e, HOF_SCHLUEPFEN)).join(" · ")}</p>` : `<p class="note">Empty for now. Your next egg comes with your next star reward.</p>`;
     if (hof.kueken.length) {
-      h += `<h3 class="hof-h">Chicks</h3><div class="hof-grid">${hof.kueken.map((k) => `<div class="hof-item">${chickSVG(k)}<b>${k.n}</b><small>${rasse(k).n}${k.m ? " · rooster" : ""}<br>grows up in ${left(k, HOF_WACHSEN)}</small></div>`).join("")}</div>`;
+      h += `<h3 class="hof-h">Chicks</h3><div class="hof-grid">${hof.kueken.map((k) => `<div class="hof-item">${chickSVG(k)}<b>${k.n}</b><small>${rasse(k).n}${k.m ? " · rooster" : ""}<br>grows up in ${left(k, HOF_WACHSEN)} more ${left(k, HOF_WACHSEN) === 1 ? "problem" : "problems"}</small></div>`).join("")}</div>`;
     }
     if (hof.huehner.length) {
       // ab 1.18 nach Familien: jede Rasse eine Karte, die neueste Familie zuerst; jedes Tier ist ein Knopf zu seinem Steckbrief
@@ -4225,7 +4242,7 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
   // ---------- Zustand und Speichern ----------
   // Gespeichert wird dreifach: sofort im Browser, im Claude-Viewer zusätzlich im Konto
   // und auf Wunsch als Spielstand-Code zum Sichern oder Mitnehmen auf ein anderes Gerät.
-  const VERSION = "1.18";
+  const VERSION = "1.18.1";
   const STORE_KEY = "math-journey-v2"; // Englische Fassung: eigene Schlüssel, damit sie auf derselben Adresse nie den deutschen Spielstand liest oder überschreibt
   const OLD_STORE_KEY = "math-journey-v1";
   let task = null;   // { a, b, op, result, skill, group, hard, pool }
@@ -4236,7 +4253,7 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
   // Ratebremse und Tipp (ab 1.13)
   let tryAt = 0, tryN = 0, brakeHits = 0, thinking = false, thinkTimer = 0, helped = false, tippPulse = false;
   let rz = null;                    // laufendes Rätselwort: { word, table, items, i, found, story, animal, wait }
-  // Herzschlag: Hält das Gerät die Seite an, ohne dass „hidden“ gemeldet wird (am 31.10. dauerte eine Aufgabe laut Protokoll 1025 s),
+  // Herzschlag: Hält das Gerät die Seite an, ohne dass „hidden“ gemeldet wird (sonst zählen Stunden als Rechenzeit),
   // fehlt beim nächsten Schlag plötzlich Zeit. Die zählt dann als Pause. Im Hintergrund schlägt er nicht mit, das erledigt visibilitychange.
   let beatAt = Date.now();
   const beat = () => {
@@ -4486,7 +4503,7 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
     try {
       clipRun++; stopClips();
       window.speechSynthesis.cancel();
-      const u = new SpeechSynthesisUtterance(text);
+      const u = new SpeechSynthesisUtterance(String(text).replace(/\s*×\s*/g, " times ").replace(/\s*÷\s*/g, " divided by "));
       u.lang = "en-US"; if (voice) u.voice = voice;
       u.rate = 0.95; u.pitch = 1.05; u.volume = Math.min(1, 0.6 * (VOLS[state.cfg.vol] || 1));
       window.speechSynthesis.speak(u);
@@ -4563,8 +4580,8 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
     if (box.dataset.sig === sig) return;
     box.dataset.sig = sig;
     box.classList.toggle("cmp", task.kind === "vergleich");
-    // Waage (ab 1.17): „>“ links, „<“ rechts. Das offene Maul zeigt so zur Seite des Knopfs. Im Protokoll drückte sie fast immer
-    // den Knopf auf der Seite der größeren Zahl (8 von 9 ersten Antworten): Mit dieser Reihenfolge führt genau das zum richtigen Zeichen.
+    // Waage (ab 1.17): „>“ links, „<“ rechts. Das offene Maul zeigt so zur Seite des Knopfs. Kinder drücken oft
+    // den Knopf auf der Seite der größeren Zahl: Mit dieser Reihenfolge führt genau das zum richtigen Zeichen.
     const order = task.kind === "vergleich" ? [2, 1, 0] : task.choices;
     box.innerHTML = order.map((v) => `<button type="button" class="choice${tried.includes(v) ? " tried" : ""}${locked && v === task.result ? " right" : ""}" data-v="${v}" aria-label="${choiceSay(task, v)}"${tried.includes(v) || locked || thinking ? " disabled" : ""}>${choiceLabel(task, v)}</button>`).join("")
       + (task.kind === "vergleich" ? `<p class="cmp-note">The open mouth faces the bigger number.</p>` : "");
@@ -4631,7 +4648,7 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
   function stepHint(t) {
     const { a, b } = t, add = t.op === "+", s = add ? "+" : "−", tn = (n) => `${n} ${n === 1 ? "ten" : "tens"}`;
     if (a % 10 === 0 && b % 10 === 0)
-      return `Think in tens: ${tn(a / 10)} ${s} ${tn(b / 10)} = ? tens`;
+      return `Think in tens: ${tn(a / 10)} ${s} ${tn(b / 10)} = ${tn((add ? a + b : a - b) / 10)}. So ${a} ${s} ${b} = ?`;
     if (b % 10 === 0)
       return `Count ${add ? "up" : "back"} by tens: ${a}, ${add ? a + 10 : a - 10}, …`;
     if (b < 10) {
@@ -4756,7 +4773,7 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
   function picQuestion(t) {
     const it = picItem(t);
     return t.pic === "verteilen"
-      ? `Share ${t.a} ${it.n} fairly on ${t.b} plates. How many go on each plate?`
+      ? `Share ${t.a} ${it.n} equally on ${t.b} plates. How many go on each plate?`
       : `${t.a} ${it.n}. ${t.b} go in ${it.box[0]}. How many ${it.box[1]} can you fill?`;
   }
   // Ziel-Platz eines Dings: Verteilen reihum (1. Ding auf Teller 1, 2. auf Teller 2 …), Aufteilen gruppenweise
@@ -5112,11 +5129,11 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
     p1: "Candle makers dip a wick into hot wax again and again, until the candle is thick enough.",
     m1: "Rope makers twist lots of thin threads into one strong rope. Long ago they did it on very long paths called ropewalks.",
     p2: "Basket weavers weave baskets from bendy willow sticks.",
-    m2: "Coopers build barrels from bent wooden boards that are held together by iron hoops.",
+    m2: "Barrel makers, also called coopers, build barrels from bent wooden boards that are held together by iron hoops.",
     p3: "Carpenters build roof frames and timber walls out of wood. Even today, young carpenters in Germany go traveling from town to town to learn.",
     m3: "Roofers cover roofs with clay tiles or slate tiles that overlap like fish scales.",
     p4: "Long ago, glassmakers put small pieces of glass together with strips of lead to make colorful windows.",
-    m4: "A mason uses a trowel to spread mortar between the stones.",
+    m4: "Bricklayers use a trowel to spread mortar between the bricks.",
     p5: "Goldsmiths make rings, chains, and goblets out of gold and silver.",
     m5: "Inside a pocket watch, tiny gears fit into each other. Watchmakers work with a magnifying glass and tweezers.",
     p6: "Bookbinders sew the pages together and give the book its hard cover.",
@@ -5252,7 +5269,7 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
     x9: { o: "greenhouse", m: "Master Lawrence", w: "flower pots", wz: "a watering can", k: "The countess", kw: "roses for her castle garden", ms: "a garden that blooms all year long", pc: "#d14f7a" },
     x10: { o: "builder's workshop", m: "Master Matilda", f: 1, w: "building plans", wz: "a compass and a square", k: "The town", kw: "a plan for the new bridge", ms: "the plan for a tower that reaches the clouds", pc: "#3a5a8a" },
     l1: { o: "tailor shop", m: "Master Dora", f: 1, w: "shirts", wz: "a needle and scissors", k: "A traveling musician", kw: "a patch for his coat", ms: "a party gown with no seams you can see", pc: "#7c3f86" },
-    l2: { o: "shoemaker's shop", m: "Master Valentine", w: "boots", wz: "a shoemaker's hammer", k: "A traveler", kw: "new soles for his boots", ms: "a pair of magic seven-mile boots", pc: "#6b4226" },
+    l2: { o: "shoemaker's shop", m: "Master Valentine", w: "boots", wz: "a shoemaker's hammer", k: "A traveler", kw: "new soles for his boots", ms: "a pair of magic seven-league boots", pc: "#6b4226" },
     l3: { o: "honey house", m: "Master Rose", f: 1, w: "honey pots", wz: "a bee smoker", k: "The gingerbread baker", kw: "two pots of honey for her gingerbread", ms: "a honeycomb as big as a window", pc: "#e3a72f" },
     d1: { o: "pastry shop", m: "Master Louise", f: 1, w: "little tarts", wz: "a piping bag", h: "the oven for the cakes", k: "The princess", kw: "a cake big enough for twelve guests", ms: "a wedding cake five layers tall", pc: "#e7a0b8" },
     d2: { o: "merchant's shop", m: "Master Anthony", w: "little spice bags", wz: "a scale", k: "A cook", kw: "pepper, shared fairly into four little bags", ms: "a store that has everything", pc: "#c98a3a" },
@@ -5301,7 +5318,7 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
       ["The First Day", `You knock on the door of the ${G.o}. ${G.m} opens it and laughs: “A new apprentice! Come on in.” The room is still almost empty: a stool, a lantern, a window.`],
       ["The Workbench", `You and ${mk} build a workbench together. “Every craft needs a sturdy place to work,” ${er} says. You step right up to it and try everything out.`],
       ["The First Tool", `${mk} gives you ${G.wz}. You hang your tool on the wall above the workbench, so you can always find it right away.`],
-      ["The Journeyman's Certificate", `Your Journeyman's Certificate now hangs on the wall in a frame! As a ${gradeName(2)}, you may make your own ${G.w}. The first ones are already on the shelf.`],
+      [`The ${gradeName(2)}'s Certificate`, `Your ${gradeName(2)}'s Certificate now hangs on the wall in a frame! As a ${gradeName(2)}, you may make your own ${G.w}. The first ones are already on the shelf.`],
       [G.h ? "The Fire Is Burning" : "A Big Cupboard", G.h ? `Today ${G.h} is lit. It's getting warm in the ${G.o}, and there are more and more ${G.w} on the shelf.` : `A big cupboard moves in, and there are more and more ${G.w} on the shelf. ${mk} nods happily.`],
       ["The First Customer", `Knock, knock! ${G.k} needs ${G.kw}. ${mk} watches over your shoulder, but you do it all by yourself.`],
       ["The Master's Certificate", `You are a ${gradeName(3)}! ${mk} hands you the big key: from today on, it's your ${G.o}. Your very own guild sign hangs over the door.`],
@@ -5440,7 +5457,7 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
     certQueue = null;
     logEv("G", s.id, g);
     const name = state.cfg.name, what = s.group === "mal" ? "the " + s.label : "“" + s.label + "”";
-    const certName = g >= 3 ? "Master's Certificate" : "Journeyman's Certificate";
+    const certName = g >= 3 ? "Master's Certificate" : `${gradeName(2)}'s Certificate`;
     $("certTitle").textContent = certName;
     $("certZunft").textContent = "Guild of " + s.zunft;
     $("certEmblem").innerHTML = emblemSVG(s, g);
@@ -5526,7 +5543,7 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
     cardOpen = ""; cardFirst = false;
     stopSpeech();
     $("explain").hidden = true;
-    if (first) { shownAt = performance.now(); pausedMs = 0; firstMs = null; tryAt = 0; }
+    if (first) { shownAt = performance.now(); pausedMs = 0; firstMs = null; tryAt = 0; restartTipp(); }
     else pausedMs += performance.now() - cardAt;   // „So geht's“ mitten in der Aufgabe: Lesezeit ist keine Rechenzeit
     focusAnswer();
     if (first && state.cfg.readTask && task) speak(taskWords(task), false, taskParts(task));
@@ -5698,7 +5715,7 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
   // ---------- Ratebremse und Tipp (ab 1.13) ----------
   // Wer mit „9“, „99“ oder „659“ nur weiterkommen will, bekommt eine kurze Denkpause. Das zählt nicht als Fehlversuch (also auch keine Lösung).
   // Beim zweiten Mal blinkt der Tipp-Knopf, beim dritten Mal kommt der Tipp von selbst. Hilfe gibt es also ohne Raten.
-  const BREMSE = ["Take your time. You don't have to guess. Look at the problem calmly.", "Take your time. If you get stuck, tap the hint button."];
+  const BREMSE = ["Take your time. You don't have to guess. Take a calm look at the problem.", "Take your time. If you get stuck, tap the hint button."];
   function slowDown(val) {
     brakeHits += 1; input = "";
     logEv("RT", val, brakeHits);
@@ -5745,6 +5762,8 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
   // Tipp nach Nachdenkzeit (ab 1.17): so viele Millisekunden muss sie noch warten. Nach einem Versuch, einer Ratebremse
   // oder wenn schon eine Hilfe zu sehen ist, gibt es keine Wartezeit mehr. Gezählt wird aktive Zeit (Pausen im Hintergrund nicht).
   let tippTimer = 0;
+  // Nach Startbildschirm oder Erklär-Karte beginnt die Nachdenkzeit neu: sonst wäre der Tipp nach langem Lesen schon wach
+  function restartTipp() { const b = $("tippBtn"); if (b) b.classList.remove("waking"); renderTipp(); }
   function tippWaitLeft() {
     const w = (state.cfg.tippWait || 0) * 1000;
     if (!w || !task || tries > 0 || tryN > 0 || brakeHits > 0 || guide || !hintEl.hidden) return 0;
@@ -6048,7 +6067,7 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
     return `<p class="pk-title">The ${n}s table</p><ol class="pk-list">${Array.from({ length: 10 }, (_, i) => {
       const k = i + 1;
       return `<li class="${core.includes(k) ? "core" : ""}" data-i="${i}"><span>${k} × ${n} =</span><b>${k * n}</b></li>`;
-    }).join("")}</ol><p class="pk-tip">${tip}</p><button class="small-btn pk-play" type="button" data-row="${n}"${state.sound ? "" : " hidden"}>🔊 Listen and say it along</button>`;
+    }).join("")}</ol><p class="pk-tip">${tip}</p><button class="small-btn pk-play" type="button" data-row="${n}"${state.sound ? "" : " hidden"}>🔊 Listen and say it with me</button>`;
   }
   function markRow(i) { $("mvPlakat").querySelectorAll("li").forEach((li) => li.classList.toggle("now", Number(li.dataset.i) === i)); }
   $("mvPlakat").addEventListener("click", (e) => {
@@ -6182,7 +6201,7 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
     const rows = SKILLS.filter((s) => s.group === "mal");
     const pm = SKILLS.filter((s) => s.group !== "mal");
     $("parentsBody").innerHTML = `
-      <p class="note p-new">New in version 1.18: the Chicken Yard with all 60 plates from the poultry album, 8 new breeds and 14 color varieties, a fair order of eggs, the yard sorted by family, and every bird with its own quirk and favorite food.</p>
+      <p class="note p-new">New in version 1.18.1: a short welcome screen on the first start, a friendlier background with a fox, an elf and a bridge, dimes and pennies for counting money, and the hint button waits the full thinking time again after an explanation card.</p>
       <details class="pg" open><summary>What is practiced?</summary>
         <fieldset class="p-field"><legend>Kinds of math</legend><div class="seg">
           <label class="opt"><input type="checkbox" data-p="ops.plus" id="opPlus"><span>Addition</span></label>
@@ -6262,7 +6281,7 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
         ${tog("cfg.mitrechnen", "Solve along step by step", "For addition and subtraction with tens or regrouping, when help comes (see “Show help after”) she works out two small steps herself (39 + 60: first 30 + 60, then 90 + 9) instead of just reading a hint. The problem then counts as solved “with help”.")}
         ${tog("cfg.tipp", "Hint button", "A “💡 Hint” button under the problem: first a picture or clue, and on the second tap the step-by-step path. The problem then counts as solved “with help”, but still earns the star. This way she can get help without giving wrong answers first.")}
         ${seg("cfg.tippWait", "Hint only after", [[0, "right away"], [10, "10 seconds"], [20, "20 seconds"]],
-          "Since 1.17: the hint button only wakes up after this thinking time (right away after a try or a slow-down). In the activity log, three quarters of the hints came within the first 10 seconds, often after 2 seconds, even on easy problems. Those problems count as “with help”, so workshops and guild ranks don't grow.")}
+          "Since 1.17: the hint button only wakes up after this thinking time (right away after a try or a slow-down). Kids who tap the hint right away often skip the thinking, even on easy problems. Those problems count as “with help”, so workshops and guild ranks don't grow.")}
         ${tog("cfg.ratebremse", "Slow-down for guessing", "A wrong answer that was just typed quickly (less than 1.5 seconds after the problem appeared or 3.5 seconds after the last try, or 99, 66, 659) doesn't count as a try. If the Mistake Detective spots a typical mistake, it isn't counted as guessing. There's a short thinking pause (4 seconds, later 7) and the voice says: “Take your time. You don't have to guess.” The third time, the hint comes by itself. Right answers are never slowed down.")}
         ${tog("cfg.detektiv", "Mistake Detective", "Spots typical careless mistakes (mixed-up signs or digits, the tens place, one row too many) and gives a targeted hint without giving away the answer.")}
         ${seg("cfg.frustN", "Offer an easier problem after", [[0, "never"], [2, "2"], [3, "3"], [4, "4"], [5, "5"]],
@@ -6285,7 +6304,7 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
 
       <details class="pg"><summary>Rewards</summary>
         ${seg("cfg.rewardEvery", "A picture after every", [[3, "3"], [5, "5"], [7, "7"], [10, "10"]], "…correctly solved problems.")}
-        ${seg("cfg.belohnung", "Reward", [["hof", "Chicken Yard with incubator"], ["bilder", "pictures like before"]], "Chicken Yard: instead of a picture, she gets an egg. After 10 correct problems, a chick hatches and she picks a name. After 25 more, it's a grown hen with a painted breed plate from 1885 (38 breeds; golden eggs hold rare ones). Pictures collected so far stay in the album.")}
+        ${seg("cfg.belohnung", "Reward", [["hof", "Chicken Yard with incubator"], ["bilder", "pictures like before"]], "Chicken Yard: instead of a picture, she gets an egg. After 10 correct problems, a chick hatches and she picks a name. After 25 more, it's a grown hen with a painted breed plate from 1885 (46 breeds; golden eggs hold the rare ones). Pictures collected so far stay in the album.")}
         ${seg("cfg.goldEvery", "A golden picture (in the Chicken Yard: a golden egg) after every", [[0, "never"], [50, "50"], [100, "100"], [200, "200"]], "…correctly solved problems. Planned, not random.")}
         ${seg("cfg.titel", "Guild titles", [["f", "Journeywoman, Master"], ["m", "Journeyman, Master"]])}
       </details>
@@ -6653,7 +6672,7 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
   function helloSteps() {
     const hof = hofOn();
     return [
-      ["🔢", "Solve the math problem. Type your answer, then tap <b>Check</b>."],
+      ["🔢", `Solve the math problem. Type your answer, then tap <b>${$("checkBtn").hidden ? "OK" : "Check"}</b>.`],   // auf Touch-Geräten heißt der Knopf „OK“
       ["⭐", "Every right answer fills a star."],
       hof ? ["🥚", "Fill all the stars and you get an egg. Keep going, and a chick hatches. You get to pick its name!"]
           : ["🖼️", "Fill all the stars and you get a new picture for your album."],
@@ -6680,7 +6699,8 @@ h1 span:nth-child(6n+6) { color: #7a4bb0; }
     stopSpeech();
     $("hello").hidden = true;
     // Die Zeit mit dem Startbildschirm zählt nicht als Rechenzeit (wie bei den Erklär-Karten)
-    if ($("explain").hidden) { shownAt = performance.now(); pausedMs = 0; firstMs = null; tryAt = 0; focusAnswer(); }
+    if ($("explain").hidden) { shownAt = performance.now(); pausedMs = 0; firstMs = null; tryAt = 0; restartTipp(); focusAnswer(); }
+    else try { $("exClose").focus({ preventScroll: true }); } catch (e) { $("exClose").focus(); }
     if (!overlayOpen() && state.cfg.readTask && task) speak(taskWords(task), false, taskParts(task));
   }
   $("helloGo").addEventListener("click", closeHello);
